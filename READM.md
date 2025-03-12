@@ -1,20 +1,24 @@
-# Mini Projeto com Flask-Login
+# Mini Projeto com Flask-Login e Banco de Dados Relacional
 
-Este é um projeto de estudo desenvolvido com Flask e a extensão `flask_login` para aprender sobre autenticação de usuários em aplicações web.
+Este é um projeto de estudo desenvolvido com Flask, onde é possível criar uma lista de tarefas pessoais após o login. O foco principal é aprender sobre autenticação de usuários e o uso de banco de dados relacional (SQLite) para armazenar usuários e suas tarefas.
 
 ## Objetivo
 
-O objetivo deste projeto é entender como implementar um sistema de login e gerenciamento de usuários usando o Flask, além de explorar os conceitos de sessão e autenticação com a extensão `flask_login`.
+O objetivo deste projeto é implementar um sistema de autenticação de usuários com Flask, permitindo a criação e visualização de uma lista de tarefas pessoais. Durante o desenvolvimento, foi explorado o uso de um banco de dados relacional (SQLite) para armazenar dados de usuários e suas respectivas tarefas.
 
 ## Funcionalidades
 
-- Registro de novos usuários.
-- Login e logout de usuários.
-- Proteção de páginas que exigem autenticação.
+- **Registro de novos usuários**: Permite que os usuários criem uma conta com nome de usuário e senha.
+- **Login e logout de usuários**: Usuários podem se autenticar e sair do sistema.
+- **Proteção de páginas que exigem autenticação**: Apenas usuários autenticados podem acessar as páginas de criação e visualização de tarefas.
+- **Criação de To-Do List**: Usuários podem adicionar tarefas à sua lista pessoal.
+- **Listagem de To-Do List**: Usuários podem visualizar as tarefas que criaram.
 
-## Sobre o Projeto
+## Tecnologias Utilizadas
 
-Este projeto foi criado para fins educativos, permitindo o desenvolvimento de uma aplicação simples com autenticação e aprendizado sobre o funcionamento do Flask em conjunto com o `flask_login`. Ele oferece uma base para expandir em projetos mais complexos com autenticação de usuários.
+- Flask
+- Flask-Login
+- SQLite (banco de dados relacional para armazenamento de usuários e tarefas)
 
 ## Contribuindo
 

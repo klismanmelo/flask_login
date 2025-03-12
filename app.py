@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from models import User
+from models import User, Todo
 from db import db
 import uuid
 import hashlib
+
 app = Flask(__name__)
 app.secret_key = 'super secret key' #necessário colocar em um dotenv posteriormente
 lm = LoginManager(app)
@@ -62,6 +63,34 @@ def register():
 def logout():
     logout_user()
     return jsonify({'status': 'logout'})
+
+@app.route('/todo', methods=['GET', 'POST'])
+def todo():
+    if request.method == 'GET':
+        user_todos = Todo.query.filter_by(user_id=current_user.id).all()
+
+        # Convertendo objetos Todo para JSON
+        todos_json = [
+            {
+                "description": todo.description,
+                "completed": todo.completed
+            }
+            for todo in user_todos
+        ]
+
+        return jsonify({"todos": todos_json})
+    elif request.method == 'POST':
+        data = request.get_json()
+        description = data.get('description')
+        new_task = Todo(description=description, user_id=current_user.id)
+
+        db.session.add(new_task)
+        db.session.commit()
+
+        if not new_task:
+            return jsonify({'message': 'Erro ao adicionar tarefa'})
+
+        return jsonify({'message': 'Tarefa adicionada com sucesso!'})
 
 if __name__ == "__main__":
     with app.app_context():
