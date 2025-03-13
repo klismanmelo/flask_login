@@ -4,12 +4,24 @@ from models import User, Todo
 from db import db
 import uuid
 import hashlib
+import jwt
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'super secret key' #necessário colocar em um dotenv posteriormente
 lm = LoginManager(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
+
+def generate_token(user):
+    """Gera um token JWT para o usuário autenticado."""
+    payload = {
+        "user_id": user.id,  # ID do usuário no banco de dados
+        "username": user.username,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=2)  # Expira em 2 horas
+    }
+    token = jwt.encode(payload, app.secret_key, algorithm="HS256")
+    return token
 
 @lm.user_loader
 def load_user(id):
@@ -35,10 +47,12 @@ def login():
         password_form = data.get("password")
         user = db.session.query(User).filter_by(username=username, password=password_hash(password_form)).first()
         if not user:
-            return jsonify({'status': 'login.failed'})
+            return jsonify({'status': 'login.failed'}), 401
 
         login_user(user)
-        return jsonify({'status': 'login.success'})
+
+        token = generate_token(user)
+        return jsonify({'status': 'login.success', 'token': token})
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
